@@ -1,6 +1,6 @@
 # Kayıt Görme Yetkisi – Kullanım Kılavuzu
 
-**Tablo:** `rp_kayit_gorme_tanim`
+**Tablo:** `zzzt_rp_kayit_gorme_tanim`
 **Kural:** `giren_user_id` kolonundaki kullanıcının girdiği kayıtları `gorecek_user_id` kolonundaki kullanıcı da görür.
 Herkes kendi kayıtlarını zaten görür, bunun için satır eklemeye gerek yok.
 
@@ -10,7 +10,7 @@ Kurulum dosyası: `sql/kayit_gorme_yetkisi.sql` (tablo, fonksiyon, ilk veriler).
 ```sql
 SELECT t.giren_user_id,   g.us_username kaydi_giren,
        t.gorecek_user_id, v.us_username kaydi_gorecek
-  FROM rp_kayit_gorme_tanim t
+  FROM zzzt_rp_kayit_gorme_tanim t
   LEFT JOIN users g ON g.us_id = t.giren_user_id
   LEFT JOIN users v ON v.us_id = t.gorecek_user_id
  ORDER BY v.us_username, g.us_username;
@@ -23,13 +23,13 @@ SELECT us_id, us_username FROM users WHERE us_username ILIKE '%ahmet%';
 
 ## 3. Yeni yetki eklemek
 ```sql
-INSERT INTO rp_kayit_gorme_tanim (giren_user_id, gorecek_user_id)
+INSERT INTO zzzt_rp_kayit_gorme_tanim (giren_user_id, gorecek_user_id)
 VALUES (11961, 11927)
 ON CONFLICT DO NOTHING;
 ```
 Birden fazla eşleşme:
 ```sql
-INSERT INTO rp_kayit_gorme_tanim (giren_user_id, gorecek_user_id) VALUES
+INSERT INTO zzzt_rp_kayit_gorme_tanim (giren_user_id, gorecek_user_id) VALUES
  (11961, 11927),
  (11962, 11927)
 ON CONFLICT DO NOTHING;
@@ -39,7 +39,7 @@ Bir kaydı birden fazla kişinin görmesi gerekiyorsa her görecek kişi için a
 
 ## 4. Yetki kaldırmak
 ```sql
-DELETE FROM rp_kayit_gorme_tanim
+DELETE FROM zzzt_rp_kayit_gorme_tanim
  WHERE giren_user_id = 11961 AND gorecek_user_id = 11927;
 ```
 
@@ -56,7 +56,7 @@ COMMIT;
 1. Excel'i iki kolonlu CSV olarak kaydedin: `giren_user_id`, `gorecek_user_id`. Görecek alanı boş olan satırları silin.
 2. Tabloyu boşaltın:
    ```sql
-   TRUNCATE rp_kayit_gorme_tanim;
+   TRUNCATE zzzt_rp_kayit_gorme_tanim;
    ```
 3. DBeaver ya da pgAdmin'de tabloya sağ tıklayın, Import Data ile CSV'yi seçin.
 
@@ -86,4 +86,4 @@ Başka tabloda: `INNER JOIN rp_kayit_gorme k ON k.user_id = <tablo>.create_user_
 - Değişiklikler anında geçerli olur. Fonksiyona ya da rapora dokunmanız gerekmez.
 - Yetki zincirleme çalışmaz. A'nın kayıtlarını B, B'ninkileri C görüyorsa, C, A'nın kayıtlarını görmez.
   C'nin de görmesi gerekiyorsa (A, C) satırını ayrıca ekleyin.
-- `rp_kayit_gorme_tanim` tablosunda test satırı var: (11961, 11927). Gerekmiyorsa silin (bkz. madde 4).
+- `zzzt_rp_kayit_gorme_tanim` tablosunda test satırı var: (11961, 11927). Gerekmiyorsa silin (bkz. madde 4).

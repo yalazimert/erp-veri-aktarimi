@@ -6,7 +6,7 @@
 
 -- 1) Tanım tablosu (Excel'deki eşleşmeler). Excel değişince sadece bu
 --    tablo güncellenir, raporlara dokunulmaz.
-CREATE TABLE IF NOT EXISTS rp_kayit_gorme_tanim (
+CREATE TABLE IF NOT EXISTS zzzt_rp_kayit_gorme_tanim (
     giren_user_id   INTEGER NOT NULL,   -- Kaydı Giren UsrId
     gorecek_user_id INTEGER NOT NULL,   -- Kaydı Görecek UsrId
     PRIMARY KEY (giren_user_id, gorecek_user_id)
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS rp_kayit_gorme_tanim (
 
 -- "Kaydı Görecek" boş olan satırlar eklenmez; o kullanıcılar zaten
 -- fonksiyon gereği kendi kayıtlarını görür.
-INSERT INTO rp_kayit_gorme_tanim (giren_user_id, gorecek_user_id) VALUES
+INSERT INTO zzzt_rp_kayit_gorme_tanim (giren_user_id, gorecek_user_id) VALUES
  (11969,11949),(11988,11946),(11996,11985),(11973,11946),(11979,12013),
  (11978,11946),(11972,11946),(11987,11949),(11981,11945),(11945,12013),
  (12089,11946),(11999,11948),(11974,11946),(11962,11946),(12000,11949),
@@ -47,7 +47,7 @@ BEGIN
         SELECT pUserID                     -- kendi kayıtları
         UNION                              -- UNION: döngü olursa sonsuza gitmez
         SELECT t.giren_user_id
-          FROM rp_kayit_gorme_tanim t
+          FROM zzzt_rp_kayit_gorme_tanim t
           JOIN g ON t.gorecek_user_id = g.user_id
          WHERE pZincir OR g.user_id = pUserID
     )
